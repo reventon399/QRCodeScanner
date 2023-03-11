@@ -13,6 +13,7 @@
 		911BB8E129BCD1AB0017BE8E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 911BB8E029BCD1AB0017BE8E /* Assets.xcassets */; };
 		911BB8E429BCD1AB0017BE8E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 911BB8E229BCD1AB0017BE8E /* LaunchScreen.storyboard */; };
 		911BB8F029BCE7D20017BE8E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 911BB8EF29BCE7D20017BE8E /* SnapKit */; };
+		911BB8F329BCE8A20017BE8E /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911BB8F229BCE8A20017BE8E /* CameraService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		911BB8E029BCD1AB0017BE8E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		911BB8E329BCD1AB0017BE8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		911BB8E529BCD1AB0017BE8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		911BB8F229BCE8A20017BE8E /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 		911BB8EC29BCE49D0017BE8E /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				911BB8F129BCE8320017BE8E /* Services */,
 				911BB8DB29BCD1A80017BE8E /* ViewController.swift */,
 			);
 			path = Sources;
@@ -88,6 +91,14 @@
 				911BB8D929BCD1A80017BE8E /* SceneDelegate.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		911BB8F129BCE8320017BE8E /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				911BB8F229BCE8A20017BE8E /* CameraService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,6 +177,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				911BB8F329BCE8A20017BE8E /* CameraService.swift in Sources */,
 				911BB8DC29BCD1A80017BE8E /* ViewController.swift in Sources */,
 				911BB8D829BCD1A80017BE8E /* AppDelegate.swift in Sources */,
 				911BB8DA29BCD1A80017BE8E /* SceneDelegate.swift in Sources */,
