@@ -54,14 +54,38 @@
 		911BB8D629BCD1A80017BE8E /* QRCodeScanner */ = {
 			isa = PBXGroup;
 			children = (
-				911BB8D729BCD1A80017BE8E /* AppDelegate.swift */,
-				911BB8D929BCD1A80017BE8E /* SceneDelegate.swift */,
-				911BB8DB29BCD1A80017BE8E /* ViewController.swift */,
+				911BB8ED29BCE4F10017BE8E /* App */,
+				911BB8EC29BCE49D0017BE8E /* Sources */,
+				911BB8EB29BCE4950017BE8E /* Resources */,
+			);
+			path = QRCodeScanner;
+			sourceTree = "<group>";
+		};
+		911BB8EB29BCE4950017BE8E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
 				911BB8E029BCD1AB0017BE8E /* Assets.xcassets */,
 				911BB8E229BCD1AB0017BE8E /* LaunchScreen.storyboard */,
 				911BB8E529BCD1AB0017BE8E /* Info.plist */,
 			);
-			path = QRCodeScanner;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		911BB8EC29BCE49D0017BE8E /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				911BB8DB29BCD1A80017BE8E /* ViewController.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		911BB8ED29BCE4F10017BE8E /* App */ = {
+			isa = PBXGroup;
+			children = (
+				911BB8D729BCD1A80017BE8E /* AppDelegate.swift */,
+				911BB8D929BCD1A80017BE8E /* SceneDelegate.swift */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -277,7 +301,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 66ZXKDA6XW;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = QRCodeScanner/Info.plist;
+				INFOPLIST_FILE = QRCodeScanner/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -304,7 +328,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 66ZXKDA6XW;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = QRCodeScanner/Info.plist;
+				INFOPLIST_FILE = QRCodeScanner/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
