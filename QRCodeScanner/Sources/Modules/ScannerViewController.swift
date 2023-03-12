@@ -9,23 +9,20 @@ import UIKit
 import AVFoundation
 
 protocol ScannerViewProtocol: AnyObject {
-    func pushTo(controller: UIViewController)
-    func dismiss()
-    func addPreviewLayer(layer: AVCaptureVideoPreviewLayer?)
     func showErrorAlert()
+    func dismiss()
+    func pushTo(controller: UIViewController)
+    func addPreviewLayer(layer: AVCaptureVideoPreviewLayer?)
 }
 
-final class ScannerViewController: UIViewController {
-    
-    //MARK: - Outlets
-    
-    weak var presenter: ScannerPresenterProtocol?
-    
-    //MARK: - Lifecycle
+class ScannerViewController: UIViewController {
+
+    var presenter: ScannerPresenterProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
+        
+        setupBackgroundColor()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,29 +39,33 @@ final class ScannerViewController: UIViewController {
         super.viewWillDisappear(animated)
         presenter?.stopCapture()
     }
+    
+    private func setupBackgroundColor() {
+        view.backgroundColor = .white
+    }
+
 }
 
-//MARK: - ScannerViewProtocol extension
-
+//MARK: - ScannerViewProtocol Extension
 extension ScannerViewController: ScannerViewProtocol {
-    
-    func pushTo(controller: UIViewController) {
-        navigationController?.pushViewController(controller, animated: true)
-    }
-    
-    func dismiss() {
-        navigationController?.dismiss(animated: true)
-    }
     
     func addPreviewLayer(layer: AVCaptureVideoPreviewLayer?) {
         guard let layer = layer else { return }
         view.layer.addSublayer(layer)
         layer.frame = view.layer.bounds
     }
-    
+
+    func pushTo(controller: UIViewController) {
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
+    func dismiss() {
+        dismiss(animated: true, completion: nil)
+    }
+
     func showErrorAlert() {
-        let alert = UIAlertController(title: "Error!",
-                                   message: "Something went wrong.",
+        let alert = UIAlertController(title: "Error",
+                                   message: "Something went wrong",
                                    preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)

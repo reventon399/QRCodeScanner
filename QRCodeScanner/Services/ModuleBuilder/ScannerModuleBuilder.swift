@@ -12,10 +12,16 @@ protocol ScannerModuleBuilderProtocol {
 }
 
 final class ScannerModuleBuilder: ScannerModuleBuilderProtocol {
-    
+
     static func createScannerModule() -> UIViewController {
-        UIViewController()
+        let view = ScannerViewController()
+        let cameraService = CameraService()
+        let webView = ScannerWebView()
+        let presenter = ScannerPresenter(view: view, cameraService: cameraService, webView: webView)
+        view.presenter = presenter
+
+        return view
     }
-    
-    
+
+
 }

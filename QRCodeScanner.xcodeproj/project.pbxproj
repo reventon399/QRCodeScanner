@@ -65,7 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				911BB8ED29BCE4F10017BE8E /* App */,
-				911BB8F729BDB9C70017BE8E /* ModuleBuilder */,
+				911BB8F129BCE8320017BE8E /* Services */,
 				911BB8EC29BCE49D0017BE8E /* Sources */,
 				911BB8EB29BCE4950017BE8E /* Resources */,
 			);
@@ -86,7 +86,6 @@
 			isa = PBXGroup;
 			children = (
 				911BB8F429BCF9690017BE8E /* Modules */,
-				911BB8F129BCE8320017BE8E /* Services */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -103,7 +102,8 @@
 		911BB8F129BCE8320017BE8E /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				911BB8F229BCE8A20017BE8E /* CameraService.swift */,
+				911BB8F729BDB9C70017BE8E /* ModuleBuilder */,
+				911BB90029BE1E800017BE8E /* CameraService */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -124,6 +124,14 @@
 				911BB8F829BDB9E60017BE8E /* ScannerModuleBuilder.swift */,
 			);
 			path = ModuleBuilder;
+			sourceTree = "<group>";
+		};
+		911BB90029BE1E800017BE8E /* CameraService */ = {
+			isa = PBXGroup;
+			children = (
+				911BB8F229BCE8A20017BE8E /* CameraService.swift */,
+			);
+			path = CameraService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

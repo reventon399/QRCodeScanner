@@ -21,6 +21,7 @@ final class ScannerWebView: UIViewController {
     private lazy var webView: WKWebView = {
         let webView = WKWebView()
         webView.navigationDelegate = self
+        
         return webView
     }()
     
@@ -35,16 +36,18 @@ final class ScannerWebView: UIViewController {
     
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
+        indicator.backgroundColor = .black
         indicator.hidesWhenStopped = true
         indicator.style = UIActivityIndicatorView.Style.large
-        indicator.translatesAutoresizingMaskIntoConstraints = false
         
         return indicator
     }()
     
     private lazy var toolBar: UIToolbar = {
-        let bar = UIToolbar()
+        let screenWidth = UIScreen.main.bounds.width
+        let bar = UIToolbar(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 55))
         bar.isTranslucent = false
+        bar.sizeToFit()
         
         return bar
     }()
@@ -102,10 +105,7 @@ private extension ScannerWebView {
     
     func setupLayout() {
         webView.snp.makeConstraints { make in
-            make.top.equalTo(view.snp.top)
-            make.left.equalTo(view.snp.top)
-            make.right.equalTo(view.snp.top)
-            make.bottom.equalTo(view.snp.top)
+            make.edges.equalToSuperview()
         }
         
         activityIndicatorContainer.snp.makeConstraints { make in
@@ -179,7 +179,7 @@ private extension ScannerWebView {
     
     @objc
     func doneSharingHandler(activityType: UIActivity.ActivityType?, completed: Bool, _ returnedItems: [Any]?, error: Error?) {
-        let successAlert = UIAlertController(title: "Success!", message: "Data was successfully downloaded!", preferredStyle: .alert)
+        let successAlert = UIAlertController(title: "Success!", message: "Successfully shared!", preferredStyle: .alert)
         
         let successButton = UIAlertAction(title: "Ok", style: .default, handler: nil)
         successAlert.addAction(successButton)
