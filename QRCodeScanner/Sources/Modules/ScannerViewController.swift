@@ -15,7 +15,7 @@ protocol ScannerViewProtocol: AnyObject {
     func addPreviewLayer(layer: AVCaptureVideoPreviewLayer?)
 }
 
-class ScannerViewController: UIViewController {
+final class ScannerViewController: UIViewController {
 
     var presenter: ScannerPresenterProtocol?
     
