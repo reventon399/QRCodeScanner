@@ -11,42 +11,68 @@ import SnapKit
 
 final class ScannerWebView: UIViewController {
     
-    private lazy var webView: WKWebView = {
-        let webView = WKWebView()
-        return webView
-    }()
-    
     //MARK: - Properties
     
     var urlText: String = ""
     var NSDateURL: NSData?
     
-    //MARK: - Private properties
+    //MARK: - Outlets
     
-    private var activityIndicatorContainer: UIView!
-    private var activityIndicator: UIActivityIndicatorView!
-
-   
+    private lazy var webView: WKWebView = {
+        let webView = WKWebView()
+        
+        return webView
+    }()
+    
+    private lazy var activityIndicatorContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.black
+        view.alpha = 0.8
+        view.layer.cornerRadius = 10
+        
+        return view
+    }()
+    
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.hidesWhenStopped = true
+        indicator.style = UIActivityIndicatorView.Style.large
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        return indicator
+    }()
+    
+    private lazy var toolBar: UIToolbar = {
+        let bar = UIToolbar()
+        bar.isTranslucent = false
+        
+        return bar
+    }()
     
     //MARK: - Lifecycle
-    
-    override func loadView() {
-        super.loadView()
-        
-        view.addSubview(webView)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        webView.navigationDelegate = self
-        setupWebView()
+        setupDelegates()
+        setupHierarchy()
+        setupLayout()
+        setupToolBar()
+        
         getDataUrl()
-        setToolBar()
         sendRequest(urlString: urlText)
     }
     
-    private func setupWebView() {
+    //MARK: - Setups
+    
+    private func setupHierarchy() {
+        view.addSubview(webView)
+        webView.addSubview(activityIndicatorContainer)
+        webView.addSubview(toolBar)
+        activityIndicatorContainer.addSubview(activityIndicator)
+    }
+    
+    private func setupLayout() {
         
         webView.snp.makeConstraints { make in
             make.top.equalTo(view.snp.top)
@@ -54,6 +80,35 @@ final class ScannerWebView: UIViewController {
             make.right.equalTo(view.snp.top)
             make.bottom.equalTo(view.snp.top)
         }
+        
+        activityIndicatorContainer.snp.makeConstraints { make in
+            make.width.equalTo(80)
+            make.height.equalTo(80)
+            make.centerX.equalTo(webView.snp.centerX)
+            make.centerY.equalTo(webView.snp.centerY)
+        }
+        
+        activityIndicator.snp.makeConstraints { make in
+            make.centerX.equalTo(activityIndicatorContainer.snp.centerX)
+            make.centerY.equalTo(activityIndicatorContainer.snp.centerY)
+        }
+        
+        toolBar.snp.makeConstraints { make in
+            make.bottom.equalTo(webView.snp.bottom)
+            make.left.equalTo(webView.snp.left)
+            make.right.equalTo(webView.snp.right)
+        }
+        
+    }
+    
+    private func setupToolBar() {
+        let shareButton = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(openActivityViewController))
+
+        toolBar.items = [shareButton]
+    }
+    
+    private func setupDelegates() {
+        webView.navigationDelegate = self
     }
     
     private func getDataUrl() {
@@ -67,44 +122,6 @@ final class ScannerWebView: UIViewController {
         let myURL = URL(string: urlString)
         let myRequest = URLRequest(url: myURL!)
         webView.load(myRequest)
-    }
-    
-    private func setActivityIndicator() {
-        activityIndicatorContainer = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
-        activityIndicatorContainer.center.x = webView.center.x
-        activityIndicatorContainer.center.y = webView.center.y - 44
-        activityIndicatorContainer.backgroundColor = UIColor.black
-        activityIndicatorContainer.alpha = 0.8
-        activityIndicatorContainer.layer.cornerRadius = 10
-
-        activityIndicator = UIActivityIndicatorView()
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.style = UIActivityIndicatorView.Style.large
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-
-        activityIndicatorContainer.addSubview(activityIndicator)
-        webView.addSubview(activityIndicatorContainer)
-
-        // Constraints
-        activityIndicator.centerXAnchor.constraint(equalTo: activityIndicatorContainer.centerXAnchor).isActive = true
-        activityIndicator.centerYAnchor.constraint(equalTo: activityIndicatorContainer.centerYAnchor).isActive = true
-    }
-    
-    private func setToolBar() {
-        let screenWidth = self.view.bounds.width
-        let shareButton = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(openAVC))
-        
-        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 44))
-        toolBar.isTranslucent = false
-        toolBar.translatesAutoresizingMaskIntoConstraints = false
-        
-        toolBar.items = [shareButton]
-        webView.addSubview(toolBar)
-        
-        // Constraints
-        toolBar.bottomAnchor.constraint(equalTo: webView.bottomAnchor, constant: 0).isActive = true
-        toolBar.leadingAnchor.constraint(equalTo: webView.leadingAnchor, constant: 0).isActive = true
-        toolBar.trailingAnchor.constraint(equalTo: webView.trailingAnchor, constant: 0).isActive = true
     }
     
     private func showActivityIndicator(show: Bool) {
@@ -126,9 +143,9 @@ final class ScannerWebView: UIViewController {
         }
     }
     
-    @objc private func openAVC() {
-            guard let NSDateURL = NSDateURL else { return }
-            let items: [Any] = [NSDateURL]
+    @objc private func openActivityViewController() {
+        guard let NSDateURL = NSDateURL else { return }
+        let items: [Any] = [NSDateURL]
         let activityViewController = UIActivityViewController(activityItems: items as [Any], applicationActivities: nil)
         activityViewController.completionWithItemsHandler = doneSharingHandler
         activityViewController.popoverPresentationController?.sourceView = self.view
@@ -155,19 +172,17 @@ final class ScannerWebView: UIViewController {
 
 //MARK: - Extension
 
-extension WebView: WKNavigationDelegate {
+extension ScannerWebView: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.showActivityIndicator(show: false)
     }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        self.setActivityIndicator()
         self.showActivityIndicator(show: true)
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         self.showActivityIndicator(show: false)
     }
-    
 }
