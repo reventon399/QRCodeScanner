@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import AVFoundation
 
 protocol ScannerPresenterProtocol: AnyObject {
     init(view: ScannerViewProtocol,
@@ -56,7 +55,7 @@ final class ScannerPresenter: ScannerPresenterProtocol {
     func run() {
         cameraService?.cameraSettings()
         let layer = cameraService?.getCapturePreviewLayer()
-        view?.addLayer(layer: layer)
+        view?.addPreviewLayer(layer: layer)
         DispatchQueue.global(qos: .background).async {
             self.cameraService?.captureSession?.startRunning()
         }
@@ -72,7 +71,7 @@ extension ScannerPresenter: CameraServiceDelegate {
     }
     
     func cameraServiceShowAlert(_ cameraService: CameraService) {
-        view?.showAlert()
+        view?.showErrorAlert()
     }
     
     func cameraService(_ cameraService: CameraService, foundQRCode code: String) {
