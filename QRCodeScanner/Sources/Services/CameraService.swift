@@ -100,5 +100,4 @@ final class CameraService: NSObject, AVCaptureMetadataOutputObjectsDelegate, Cam
     var prefersStatusBarHidden: Bool {
         return true
     }
-
 }
