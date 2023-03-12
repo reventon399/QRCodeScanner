@@ -13,14 +13,14 @@ final class ScannerWebView: UIViewController {
     
     //MARK: - Properties
     
-    var urlText: String = ""
+    var urlString: String = ""
     var NSDateURL: NSData?
     
     //MARK: - Outlets
     
     private lazy var webView: WKWebView = {
         let webView = WKWebView()
-        
+        webView.navigationDelegate = self
         return webView
     }()
     
@@ -53,27 +53,54 @@ final class ScannerWebView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupDelegates()
+    
         setupHierarchy()
         setupLayout()
         setupToolBar()
         
         getDataUrl()
-        sendRequest(urlString: urlText)
+        sendRequest(urlString: urlString)
+    }
+}
+
+//MARK: - Extension - WKNavigationDelegate
+
+extension ScannerWebView: WKNavigationDelegate {
+    
+    private func showActivityIndicator(show: Bool) {
+        if show {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+            activityIndicatorContainer.removeFromSuperview()
+        }
     }
     
-    //MARK: - Setups
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        self.showActivityIndicator(show: false)
+    }
     
-    private func setupHierarchy() {
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        self.showActivityIndicator(show: true)
+    }
+    
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        self.showActivityIndicator(show: false)
+    }
+}
+
+//MARK: - Setups private extension
+
+private extension ScannerWebView {
+    
+    func setupHierarchy() {
         view.addSubview(webView)
         webView.addSubview(activityIndicatorContainer)
         webView.addSubview(toolBar)
         activityIndicatorContainer.addSubview(activityIndicator)
     }
     
-    private func setupLayout() {
-        
+    func setupLayout() {
         webView.snp.makeConstraints { make in
             make.top.equalTo(view.snp.top)
             make.left.equalTo(view.snp.top)
@@ -98,44 +125,39 @@ final class ScannerWebView: UIViewController {
             make.left.equalTo(webView.snp.left)
             make.right.equalTo(webView.snp.right)
         }
-        
     }
     
-    private func setupToolBar() {
+    func setupToolBar() {
         let shareButton = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(openActivityViewController))
-
+        
         toolBar.items = [shareButton]
     }
+}
+
+//MARK: Data Source private extension
+
+private extension ScannerWebView {
     
-    private func setupDelegates() {
-        webView.navigationDelegate = self
+    func getDataUrl() {
+        DispatchQueue.global(qos: .background).async {
+            guard let url = URL(string: self.urlString) else { return }
+            self.NSDateURL = NSData(contentsOf: url)
+        }
     }
     
-    private func getDataUrl() {
-        DispatchQueue.global(qos: .background).async {
-                guard let url = URL(string: self.urlText) else { return }
-                self.NSDateURL = NSData(contentsOf: url)
-            }
-        }
-    
-    private func sendRequest(urlString: String) {
+    func sendRequest(urlString: String) {
         let myURL = URL(string: urlString)
         let myRequest = URLRequest(url: myURL!)
         webView.load(myRequest)
     }
+}
+
+//MARK: - Actions private extension
+
+private extension ScannerWebView {
     
-    private func showActivityIndicator(show: Bool) {
-        if show {
-            activityIndicator.startAnimating()
-        } else {
-            activityIndicator.stopAnimating()
-            activityIndicatorContainer.removeFromSuperview()
-        }
-    }
-    
-    //MARK: - Actions
-    
-    @objc private func goBack() {
+    @objc
+    func goBack() {
         if webView.canGoBack {
             webView.goBack()
         } else {
@@ -143,7 +165,8 @@ final class ScannerWebView: UIViewController {
         }
     }
     
-    @objc private func openActivityViewController() {
+    @objc
+    func openActivityViewController() {
         guard let NSDateURL = NSDateURL else { return }
         let items: [Any] = [NSDateURL]
         let activityViewController = UIActivityViewController(activityItems: items as [Any], applicationActivities: nil)
@@ -154,35 +177,22 @@ final class ScannerWebView: UIViewController {
         }
     }
     
-    @objc func doneSharingHandler(activityType: UIActivity.ActivityType?, completed: Bool, _ returnedItems: [Any]?, error: Error?) {
-        let successAlert = UIAlertController(title: "Download success!", message: "Your data was successfully downloaded!", preferredStyle: .alert)
+    @objc
+    func doneSharingHandler(activityType: UIActivity.ActivityType?, completed: Bool, _ returnedItems: [Any]?, error: Error?) {
+        let successAlert = UIAlertController(title: "Success!", message: "Data was successfully downloaded!", preferredStyle: .alert)
+        
         let successButton = UIAlertAction(title: "Ok", style: .default, handler: nil)
         successAlert.addAction(successButton)
         
-        let errorAlert = UIAlertController(title: "Oops!", message: "Somethings gone wrong! Your data was not downloaded =(", preferredStyle: .alert)
+        let errorAlert = UIAlertController(title: "Error!", message: "Somethings went wrong!", preferredStyle: .alert)
+        
         let errorButton = UIAlertAction(title: "Ok", style: .default, handler: nil)
         errorAlert.addAction(errorButton)
+        
         if completed {
             present(successAlert, animated: true)
         } else {
             present(errorAlert, animated: true)
         }
-    }
-}
-
-//MARK: - Extension
-
-extension ScannerWebView: WKNavigationDelegate {
-    
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        self.showActivityIndicator(show: false)
-    }
-    
-    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        self.showActivityIndicator(show: true)
-    }
-    
-    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        self.showActivityIndicator(show: false)
     }
 }
