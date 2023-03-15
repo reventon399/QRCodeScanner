@@ -10,7 +10,7 @@ import UIKit
 protocol ScannerPresenterProtocol: AnyObject {
     init(view: ScannerViewProtocol,
          cameraService: CameraServiceProtocol,
-         webView: ScannerWebView)
+         webView: ScannerWebViewProtocol)
     
     func startCapture()
     func stopCapture()
@@ -23,11 +23,11 @@ final class ScannerPresenter: ScannerPresenterProtocol {
     
     weak var view: ScannerViewProtocol?
     var cameraService: CameraServiceProtocol?
-    var webView: ScannerWebView?
+    var webView: ScannerWebViewProtocol?
     
     //MARK: - Init
     
-    init(view: ScannerViewProtocol, cameraService: CameraServiceProtocol, webView: ScannerWebView) {
+    init(view: ScannerViewProtocol, cameraService: CameraServiceProtocol, webView: ScannerWebViewProtocol) {
         self.view = view
         self.cameraService = cameraService
         self.webView = webView
@@ -75,8 +75,7 @@ extension ScannerPresenter: CameraServiceDelegate {
     }
     
     func cameraService(_ cameraService: CameraService, foundQRCode code: String) {
-        guard let webView = webView else { return }
-        webView.urlString = code
-        view?.pushTo(controller: webView)
+        webView?.urlString = code
+        view?.pushTo(controller: webView as? UIViewController ?? UIViewController())
     }
 }

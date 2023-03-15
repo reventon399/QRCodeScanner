@@ -9,7 +9,11 @@ import UIKit
 import WebKit
 import SnapKit
 
-final class ScannerWebView: UIViewController {
+protocol ScannerWebViewProtocol {
+    var urlString: String { get set }
+}
+
+final class ScannerWebView: UIViewController, ScannerWebViewProtocol {
     
     //MARK: - Properties
     
