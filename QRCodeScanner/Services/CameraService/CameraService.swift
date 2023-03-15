@@ -17,7 +17,7 @@ protocol CameraServiceDelegate: AnyObject {
 protocol CameraServiceProtocol: AnyObject {
     
     var delegate: CameraServiceDelegate? { get set }
-    var captureSession: AVCaptureSession? { get set }
+    var captureSession: AVCaptureSession { get set }
     var previewLayer: AVCaptureVideoPreviewLayer? { get set }
     
     func cameraSettings()
@@ -30,31 +30,29 @@ final class CameraService: NSObject, AVCaptureMetadataOutputObjectsDelegate, Cam
     
     weak var delegate: CameraServiceDelegate?
     
-    var captureSession: AVCaptureSession?
+    var captureSession = AVCaptureSession()
     var previewLayer: AVCaptureVideoPreviewLayer?
     
     func cameraSettings() {
         guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return }
-        captureSession = AVCaptureSession()
         let videoInput: AVCaptureDeviceInput
+        let metadataOutput = AVCaptureMetadataOutput()
         
         do {
             videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
+            
+            if captureSession.canAddInput(videoInput){
+                captureSession.addInput(videoInput)
+            } else {
+                settingsFailed()
+                return
+            }
         } catch {
             return
         }
-        
-        if ((captureSession?.canAddInput(videoInput)) != nil) {
-            captureSession?.addInput(videoInput)
-        } else {
-            settingsFailed()
-            return
-        }
 
-        let metadataOutput = AVCaptureMetadataOutput()
-
-        if ((captureSession?.canAddOutput(metadataOutput)) != nil) {
-            captureSession?.addOutput(metadataOutput)
+        if captureSession.canAddOutput(metadataOutput) {
+            captureSession.addOutput(metadataOutput)
 
             metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
             metadataOutput.metadataObjectTypes = [.qr]
@@ -63,24 +61,21 @@ final class CameraService: NSObject, AVCaptureMetadataOutputObjectsDelegate, Cam
             return
         }
 
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession ?? AVCaptureSession())
+        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer?.videoGravity = .resizeAspectFill
     }
-
+    
     func getCapturePreviewLayer() -> AVCaptureVideoPreviewLayer? {
-        guard let previewLayer = previewLayer else { return nil }
-
-        return previewLayer
+        previewLayer
     }
-
+    
     func settingsFailed() {
         delegate?.cameraServiceShowAlert(self)
-        captureSession = nil
     }
-
+    
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        captureSession?.stopRunning()
-
+        captureSession.stopRunning()
+        
         if let metadataObject = metadataObjects.first {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
             guard let stringValue = readableObject.stringValue else { return }
@@ -90,13 +85,13 @@ final class CameraService: NSObject, AVCaptureMetadataOutputObjectsDelegate, Cam
 
         delegate?.cameraServiceDismiss(self)
     }
-
+    
     func foundQR(code: String) {
         DispatchQueue.main.async {
             self.delegate?.cameraService(self, foundQRCode: code)
         }
     }
-
+    
     var prefersStatusBarHidden: Bool {
         return true
     }

@@ -43,7 +43,6 @@ final class ScannerViewController: UIViewController {
     private func setupBackgroundColor() {
         view.backgroundColor = .white
     }
-
 }
 
 //MARK: - ScannerViewProtocol Extension

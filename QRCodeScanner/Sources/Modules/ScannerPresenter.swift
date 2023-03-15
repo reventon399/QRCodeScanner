@@ -38,16 +38,16 @@ final class ScannerPresenter: ScannerPresenterProtocol {
     
     func startCapture() {
         DispatchQueue.global(qos: .background).async {
-            if self.cameraService?.captureSession?.isRunning == false {
-                self.cameraService?.captureSession?.startRunning()
+            if self.cameraService?.captureSession.isRunning == false {
+                self.cameraService?.captureSession.startRunning()
             }
         }
     }
     
     func stopCapture() {
         DispatchQueue.global(qos: .background).async {
-            if self.cameraService?.captureSession?.isRunning == true {
-                self.cameraService?.captureSession?.stopRunning()
+            if self.cameraService?.captureSession.isRunning == true {
+                self.cameraService?.captureSession.stopRunning()
             }
         }
     }
@@ -57,7 +57,7 @@ final class ScannerPresenter: ScannerPresenterProtocol {
         let layer = cameraService?.getCapturePreviewLayer()
         view?.addPreviewLayer(layer: layer)
         DispatchQueue.global(qos: .background).async {
-            self.cameraService?.captureSession?.startRunning()
+            self.cameraService?.captureSession.startRunning()
         }
     }
 }

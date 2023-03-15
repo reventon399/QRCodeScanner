@@ -22,6 +22,4 @@ final class ScannerModuleBuilder: ScannerModuleBuilderProtocol {
 
         return view
     }
-
-
 }
