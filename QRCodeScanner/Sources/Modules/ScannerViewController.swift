@@ -16,8 +16,12 @@ protocol ScannerViewProtocol: AnyObject {
 }
 
 final class ScannerViewController: UIViewController {
-
+    
+    // MARK: - Properties
+    
     var presenter: ScannerPresenterProtocol?
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,18 +31,23 @@ final class ScannerViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         presenter?.startCapture()
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         presenter?.run()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
         presenter?.stopCapture()
     }
+    
+    // MARK: - Private methods
     
     private func setupBackgroundColor() {
         view.backgroundColor = .white
@@ -46,6 +55,7 @@ final class ScannerViewController: UIViewController {
 }
 
 //MARK: - ScannerViewProtocol Extension
+
 extension ScannerViewController: ScannerViewProtocol {
     
     func addPreviewLayer(layer: AVCaptureVideoPreviewLayer?) {
@@ -53,19 +63,19 @@ extension ScannerViewController: ScannerViewProtocol {
         view.layer.addSublayer(layer)
         layer.frame = view.layer.bounds
     }
-
+    
     func pushTo(controller: UIViewController) {
         navigationController?.pushViewController(controller, animated: true)
     }
-
+    
     func dismiss() {
         dismiss(animated: true, completion: nil)
     }
-
+    
     func showErrorAlert() {
         let alert = UIAlertController(title: "Error",
-                                   message: "Something went wrong",
-                                   preferredStyle: .alert)
+                                      message: "Something went wrong",
+                                      preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }

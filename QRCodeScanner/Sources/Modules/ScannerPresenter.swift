@@ -22,12 +22,15 @@ final class ScannerPresenter: ScannerPresenterProtocol {
     //MARK: - Properties
     
     weak var view: ScannerViewProtocol?
-    var cameraService: CameraServiceProtocol?
+    var cameraService: CameraServiceProtocol
     var webView: ScannerWebViewProtocol?
     
     //MARK: - Init
     
-    init(view: ScannerViewProtocol, cameraService: CameraServiceProtocol, webView: ScannerWebViewProtocol) {
+    init(view: ScannerViewProtocol,
+         cameraService: CameraServiceProtocol,
+         webView: ScannerWebViewProtocol) {
+        
         self.view = view
         self.cameraService = cameraService
         self.webView = webView
@@ -37,27 +40,29 @@ final class ScannerPresenter: ScannerPresenterProtocol {
     //MARK: - Capture methods
     
     func startCapture() {
-        DispatchQueue.global(qos: .background).async {
-            if self.cameraService?.captureSession.isRunning == false {
-                self.cameraService?.captureSession.startRunning()
-            }
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let session = self?.cameraService.captureSession else { return }
+            guard !session.isRunning else { return }
+            session.startRunning()
         }
     }
     
     func stopCapture() {
-        DispatchQueue.global(qos: .background).async {
-            if self.cameraService?.captureSession.isRunning == true {
-                self.cameraService?.captureSession.stopRunning()
-            }
+        DispatchQueue.global(qos: .background).async  { [weak self] in
+            guard let session = self?.cameraService.captureSession else { return }
+            guard session.isRunning else { return }
+            session.stopRunning()
         }
     }
     
     func run() {
-        cameraService?.cameraSettings()
-        let layer = cameraService?.getCapturePreviewLayer()
-        view?.addPreviewLayer(layer: layer)
-        DispatchQueue.global(qos: .background).async {
-            self.cameraService?.captureSession.startRunning()
+        cameraService.cameraSettings()
+        let layer = cameraService.getCapturePreviewLayer()
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.cameraService.captureSession.startRunning()
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.view?.addPreviewLayer(layer: layer)
         }
     }
 }
@@ -75,7 +80,8 @@ extension ScannerPresenter: CameraServiceDelegate {
     }
     
     func cameraService(_ cameraService: CameraService, foundQRCode code: String) {
-        webView?.urlString = code
-        view?.pushTo(controller: webView as? UIViewController ?? UIViewController())
+        guard let webView = webView as? ScannerWebView else { return }
+        webView.urlString = code
+        view?.pushTo(controller: webView)
     }
 }

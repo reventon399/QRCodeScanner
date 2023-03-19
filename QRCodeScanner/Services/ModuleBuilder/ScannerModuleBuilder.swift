@@ -8,18 +8,16 @@
 import UIKit
 
 protocol ScannerModuleBuilderProtocol {
-    static func createScannerModule() -> UIViewController
+    static func createScannerModule(cameraService: CameraServiceProtocol, webView: ScannerWebViewProtocol) -> UIViewController
 }
 
 final class ScannerModuleBuilder: ScannerModuleBuilderProtocol {
 
-    static func createScannerModule() -> UIViewController {
-        let view = ScannerViewController()
-        let cameraService = CameraService()
-        let webView = ScannerWebView()
-        let presenter = ScannerPresenter(view: view, cameraService: cameraService, webView: webView)
-        view.presenter = presenter
+    static func createScannerModule(cameraService: CameraServiceProtocol, webView: ScannerWebViewProtocol) -> UIViewController {
+        let scannerViewController = ScannerViewController()
+        let scannerPresenter = ScannerPresenter(view: scannerViewController, cameraService: cameraService, webView: webView)
+        scannerViewController.presenter = scannerPresenter
 
-        return view
+        return scannerViewController
     }
 }

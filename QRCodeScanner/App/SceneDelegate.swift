@@ -15,9 +15,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        let scannerModule = ScannerModuleBuilder.createScannerModule()
-        let navigationController = UINavigationController(rootViewController: scannerModule)
+        let cameraService = CameraService()
+        let webView = ScannerWebView()
+        let scannerModule = ScannerModuleBuilder.createScannerModule(cameraService: cameraService, webView: webView)
+        let navigationController = createNavigationController(rootViewController: scannerModule)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
+    }
+    
+    private func createNavigationController(rootViewController: UIViewController) -> UINavigationController {
+        let navigationController = UINavigationController(rootViewController: rootViewController)
+        return navigationController
     }
 }

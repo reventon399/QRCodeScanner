@@ -18,7 +18,7 @@ final class ScannerWebView: UIViewController, ScannerWebViewProtocol {
     //MARK: - Properties
     
     var urlString: String = ""
-    var NSDateURL: NSData?
+    private var data: NSData?
     
     //MARK: - Outlets
     
@@ -31,25 +31,23 @@ final class ScannerWebView: UIViewController, ScannerWebViewProtocol {
     
     private lazy var activityIndicatorContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.black
-        view.alpha = 0.8
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.8)
         view.layer.cornerRadius = 10
         
         return view
     }()
     
     private lazy var activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView()
+        let indicator = UIActivityIndicatorView(style: .large)
         indicator.backgroundColor = .black
         indicator.hidesWhenStopped = true
-        indicator.style = UIActivityIndicatorView.Style.large
         
         return indicator
     }()
     
     private lazy var toolBar: UIToolbar = {
-        let screenWidth = UIScreen.main.bounds.width
-        let bar = UIToolbar(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 55))
+        let bar = UIToolbar()
+        bar.barStyle = .default
         bar.isTranslucent = false
         bar.sizeToFit()
         
@@ -60,13 +58,11 @@ final class ScannerWebView: UIViewController, ScannerWebViewProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         setupHierarchy()
         setupLayout()
         setupToolBar()
-        
-        getDataUrl()
-        sendRequest(urlString: urlString)
+        setupWebView()
     }
 }
 
@@ -100,6 +96,11 @@ extension ScannerWebView: WKNavigationDelegate {
 
 private extension ScannerWebView {
     
+    func setupWebView() {
+        getDataUrl()
+        sendRequest(urlString: urlString)
+    }
+    
     func setupHierarchy() {
         view.addSubview(webView)
         webView.addSubview(activityIndicatorContainer)
@@ -113,28 +114,29 @@ private extension ScannerWebView {
         }
         
         activityIndicatorContainer.snp.makeConstraints { make in
-            make.width.equalTo(80)
-            make.height.equalTo(80)
-            make.centerX.equalTo(webView.snp.centerX)
-            make.centerY.equalTo(webView.snp.centerY)
+            make.width.height.equalTo(80)
+            make.centerY.centerX.equalToSuperview()
         }
         
         activityIndicator.snp.makeConstraints { make in
-            make.centerX.equalTo(activityIndicatorContainer.snp.centerX)
-            make.centerY.equalTo(activityIndicatorContainer.snp.centerY)
+            make.centerX.centerY.equalToSuperview()
         }
         
         toolBar.snp.makeConstraints { make in
-            make.bottom.equalTo(webView.snp.bottom)
-            make.left.equalTo(webView.snp.left)
-            make.right.equalTo(webView.snp.right)
+            make.bottom.left.right.equalTo(view.safeAreaLayoutGuide)
+            make.width.equalToSuperview()
         }
     }
     
     func setupToolBar() {
-        let shareButton = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(openActivityViewController))
         
-        toolBar.items = [shareButton]
+        let flexibleItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        let shareButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(openActivityViewController))
+        let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: nil)
+        let drawButton = UIBarButtonItem(image: UIImage(systemName: "pencil.tip.crop.circle"), style: .plain, target: self, action: nil)
+        
+        toolBar.items = [shareButton, flexibleItem, searchButton, flexibleItem, drawButton]
     }
 }
 
@@ -143,15 +145,17 @@ private extension ScannerWebView {
 private extension ScannerWebView {
     
     func getDataUrl() {
-        DispatchQueue.global(qos: .background).async {
-            guard let url = URL(string: self.urlString) else { return }
-            self.NSDateURL = NSData(contentsOf: url)
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard
+                let urlString = self?.urlString,
+                let url = URL(string: urlString) else { return }
+            self?.data = NSData(contentsOf: url)
         }
     }
     
     func sendRequest(urlString: String) {
-        let myURL = URL(string: urlString)
-        let myRequest = URLRequest(url: myURL!)
+        guard let myURL = URL(string: urlString) else { return }
+        let myRequest = URLRequest(url: myURL)
         webView.load(myRequest)
     }
 }
@@ -162,22 +166,22 @@ private extension ScannerWebView {
     
     @objc
     func goBack() {
-        if webView.canGoBack {
-            webView.goBack()
-        } else {
-            self.dismiss(animated: true, completion: nil)
+        guard webView.canGoBack else {
+            dismiss(animated: true, completion: nil)
+            return
         }
+        webView.goBack()
     }
     
     @objc
     func openActivityViewController() {
-        guard let NSDateURL = NSDateURL else { return }
-        let items: [Any] = [NSDateURL]
-        let activityViewController = UIActivityViewController(activityItems: items as [Any], applicationActivities: nil)
+        guard let data = data else { return }
+        let items = [data]
+        let activityViewController = UIActivityViewController(activityItems: items , applicationActivities: nil)
         activityViewController.completionWithItemsHandler = doneSharingHandler
         activityViewController.popoverPresentationController?.sourceView = self.view
-        DispatchQueue.main.async {
-            self.present(activityViewController, animated: true, completion: nil)
+        DispatchQueue.main.async { [weak self] in
+            self?.present(activityViewController, animated: true, completion: nil)
         }
     }
     
