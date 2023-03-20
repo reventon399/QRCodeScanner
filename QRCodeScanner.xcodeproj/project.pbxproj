@@ -9,21 +9,28 @@
 /* Begin PBXBuildFile section */
 		911BB8D829BCD1A80017BE8E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911BB8D729BCD1A80017BE8E /* AppDelegate.swift */; };
 		911BB8DA29BCD1A80017BE8E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911BB8D929BCD1A80017BE8E /* SceneDelegate.swift */; };
-		911BB8DC29BCD1A80017BE8E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911BB8DB29BCD1A80017BE8E /* ViewController.swift */; };
-		911BB8DF29BCD1A80017BE8E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 911BB8DD29BCD1A80017BE8E /* Main.storyboard */; };
+		911BB8DC29BCD1A80017BE8E /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911BB8DB29BCD1A80017BE8E /* ScannerViewController.swift */; };
 		911BB8E129BCD1AB0017BE8E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 911BB8E029BCD1AB0017BE8E /* Assets.xcassets */; };
 		911BB8E429BCD1AB0017BE8E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 911BB8E229BCD1AB0017BE8E /* LaunchScreen.storyboard */; };
+		911BB8F029BCE7D20017BE8E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 911BB8EF29BCE7D20017BE8E /* SnapKit */; };
+		911BB8F329BCE8A20017BE8E /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911BB8F229BCE8A20017BE8E /* CameraService.swift */; };
+		911BB8F629BCFA030017BE8E /* ScannerWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911BB8F529BCFA030017BE8E /* ScannerWebView.swift */; };
+		911BB8F929BDB9E60017BE8E /* ScannerModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911BB8F829BDB9E60017BE8E /* ScannerModuleBuilder.swift */; };
+		911BB8FB29BDBB3D0017BE8E /* ScannerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911BB8FA29BDBB3D0017BE8E /* ScannerPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		911BB8D429BCD1A80017BE8E /* QRCodeScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QRCodeScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		911BB8D729BCD1A80017BE8E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		911BB8D929BCD1A80017BE8E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		911BB8DB29BCD1A80017BE8E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		911BB8DE29BCD1A80017BE8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		911BB8DB29BCD1A80017BE8E /* ScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
 		911BB8E029BCD1AB0017BE8E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		911BB8E329BCD1AB0017BE8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		911BB8E529BCD1AB0017BE8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		911BB8F229BCE8A20017BE8E /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
+		911BB8F529BCFA030017BE8E /* ScannerWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerWebView.swift; sourceTree = "<group>"; };
+		911BB8F829BDB9E60017BE8E /* ScannerModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerModuleBuilder.swift; sourceTree = "<group>"; };
+		911BB8FA29BDBB3D0017BE8E /* ScannerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				911BB8F029BCE7D20017BE8E /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,15 +64,74 @@
 		911BB8D629BCD1A80017BE8E /* QRCodeScanner */ = {
 			isa = PBXGroup;
 			children = (
-				911BB8D729BCD1A80017BE8E /* AppDelegate.swift */,
-				911BB8D929BCD1A80017BE8E /* SceneDelegate.swift */,
-				911BB8DB29BCD1A80017BE8E /* ViewController.swift */,
-				911BB8DD29BCD1A80017BE8E /* Main.storyboard */,
+				911BB8ED29BCE4F10017BE8E /* App */,
+				911BB8F129BCE8320017BE8E /* Services */,
+				911BB8EC29BCE49D0017BE8E /* Sources */,
+				911BB8EB29BCE4950017BE8E /* Resources */,
+			);
+			path = QRCodeScanner;
+			sourceTree = "<group>";
+		};
+		911BB8EB29BCE4950017BE8E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
 				911BB8E029BCD1AB0017BE8E /* Assets.xcassets */,
 				911BB8E229BCD1AB0017BE8E /* LaunchScreen.storyboard */,
 				911BB8E529BCD1AB0017BE8E /* Info.plist */,
 			);
-			path = QRCodeScanner;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		911BB8EC29BCE49D0017BE8E /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				911BB8F429BCF9690017BE8E /* Modules */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		911BB8ED29BCE4F10017BE8E /* App */ = {
+			isa = PBXGroup;
+			children = (
+				911BB8D729BCD1A80017BE8E /* AppDelegate.swift */,
+				911BB8D929BCD1A80017BE8E /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		911BB8F129BCE8320017BE8E /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				911BB8F729BDB9C70017BE8E /* ModuleBuilder */,
+				911BB90029BE1E800017BE8E /* CameraService */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		911BB8F429BCF9690017BE8E /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				911BB8F529BCFA030017BE8E /* ScannerWebView.swift */,
+				911BB8DB29BCD1A80017BE8E /* ScannerViewController.swift */,
+				911BB8FA29BDBB3D0017BE8E /* ScannerPresenter.swift */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		911BB8F729BDB9C70017BE8E /* ModuleBuilder */ = {
+			isa = PBXGroup;
+			children = (
+				911BB8F829BDB9E60017BE8E /* ScannerModuleBuilder.swift */,
+			);
+			path = ModuleBuilder;
+			sourceTree = "<group>";
+		};
+		911BB90029BE1E800017BE8E /* CameraService */ = {
+			isa = PBXGroup;
+			children = (
+				911BB8F229BCE8A20017BE8E /* CameraService.swift */,
+			);
+			path = CameraService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +150,9 @@
 			dependencies = (
 			);
 			name = QRCodeScanner;
+			packageProductDependencies = (
+				911BB8EF29BCE7D20017BE8E /* SnapKit */,
+			);
 			productName = QRCodeScanner;
 			productReference = 911BB8D429BCD1A80017BE8E /* QRCodeScanner.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +181,9 @@
 				Base,
 			);
 			mainGroup = 911BB8CB29BCD1A70017BE8E;
+			packageReferences = (
+				911BB8EE29BCE7D20017BE8E /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 911BB8D529BCD1A80017BE8E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -127,7 +200,6 @@
 			files = (
 				911BB8E429BCD1AB0017BE8E /* LaunchScreen.storyboard in Resources */,
 				911BB8E129BCD1AB0017BE8E /* Assets.xcassets in Resources */,
-				911BB8DF29BCD1A80017BE8E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,23 +210,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				911BB8DC29BCD1A80017BE8E /* ViewController.swift in Sources */,
+				911BB8F329BCE8A20017BE8E /* CameraService.swift in Sources */,
+				911BB8DC29BCD1A80017BE8E /* ScannerViewController.swift in Sources */,
+				911BB8F929BDB9E60017BE8E /* ScannerModuleBuilder.swift in Sources */,
 				911BB8D829BCD1A80017BE8E /* AppDelegate.swift in Sources */,
 				911BB8DA29BCD1A80017BE8E /* SceneDelegate.swift in Sources */,
+				911BB8F629BCFA030017BE8E /* ScannerWebView.swift in Sources */,
+				911BB8FB29BDBB3D0017BE8E /* ScannerPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		911BB8DD29BCD1A80017BE8E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				911BB8DE29BCD1A80017BE8E /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		911BB8E229BCD1AB0017BE8E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -289,12 +357,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 66ZXKDA6XW;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = QRCodeScanner/Info.plist;
+				INFOPLIST_FILE = QRCodeScanner/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -317,12 +385,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 66ZXKDA6XW;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = QRCodeScanner/Info.plist;
+				INFOPLIST_FILE = QRCodeScanner/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -358,6 +426,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		911BB8EE29BCE7D20017BE8E /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		911BB8EF29BCE7D20017BE8E /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 911BB8EE29BCE7D20017BE8E /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 911BB8CC29BCD1A70017BE8E /* Project object */;
 }
